@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <title>Tugas 2 - JavaScript: Data Pegawai</title>
+  <style>
+    table { border-collapse: collapse; width: 100%; max-width: 900px; font-family: Arial, sans-serif; }
+    th, td { border: 1px solid #333; padding: 8px 12px; text-align: left; }
+    thead th { background-color: #2c3e50; color: white; }
+    tfoot td { background-color: #ecf0f1; font-weight: bold; }
+  </style>
+</head>
+<body>
+  <h1>Tugas 2 - Data Pegawai</h1>
+  <table id="tabelPegawai">
+    <thead>
+      <tr>
+        <th>Nama Pegawai</th>
+        <th>Umur</th>
+        <th>Jabatan</th>
+        <th>Status</th>
+        <th>Gaji Pokok</th>
+        <th>Tunjangan Jabatan</th>
+        <th>Tunjangan Keluarga</th>
+        <th>BPJS (Potongan)</th>
+      </tr>
+    </thead>
+    <tbody id="isiTabel">
+      <!-- Baris data akan diisi otomatis oleh JavaScript -->
+    </tbody>
+    <tfoot>
+      <tr>
+        <td colspan="7" style="text-align:right;">Total Gaji</td>
+        <td id="totalGajiCell"></td>
+      </tr>
+    </tfoot>
+  </table>
+
+  <script>
+    // ========================================================
+    // DATA DIKETAHUI (variabel)
+    // ========================================================
+    var namaPegawai = "Dodi Prayodi";
+    var umur = 25;
+    var jabatan = "manajer";   // nilai bisa: manajer, asisten manajer, staff
+    var status = "menikah";    // nilai bisa: menikah, belum menikah
+
+    // ========================================================
+    // MENENTUKAN GAJI POKOK berdasarkan jabatan menggunakan IF-ELSE
+    // Manajer = 15.000.000 | Asisten Manajer = 10.000.000 | Staff = 5.000.000
+    // ========================================================
+    var gajiPokok;
+    var jabatanLower = jabatan.toLowerCase();
+
+    if (jabatanLower === "manajer") {
+      gajiPokok = 15000000;
+    } else if (jabatanLower === "asisten manajer") {
+      gajiPokok = 10000000;
+    } else if (jabatanLower === "staff") {
+      gajiPokok = 5000000;
+    } else {
+      gajiPokok = 0; // jika jabatan tidak dikenali
+    }
+
+    // ========================================================
+    // TUNJANGAN JABATAN = 15% dari Gaji Pokok
+    // ========================================================
+    var tunjanganJabatan = gajiPokok * 0.15;
+
+    // ========================================================
+    // BPJS = 10% dari Gaji Pokok (bersifat potongan/pengurang gaji)
+    // ========================================================
+    var bpjs = gajiPokok * 0.10;
+
+    // ========================================================
+    // TUNJANGAN KELUARGA menggunakan TERNARY OPERATOR
+    // Jika status menikah -> 20% dari Gaji Pokok, jika belum -> 0
+    // ========================================================
+    var tunjanganKeluarga = (status.toLowerCase() === "menikah") ? gajiPokok * 0.20 : 0;
+
+    // ========================================================
+    // TOTAL GAJI = menjumlahkan seluruh elemen gaji
+    // (Gaji Pokok + Tunjangan Jabatan + Tunjangan Keluarga + BPJS)
+    // ========================================================
+    var totalGaji = gajiPokok + tunjanganJabatan + tunjanganKeluarga + bpjs;
+
+    // ========================================================
+    // FUNGSI format angka menjadi format Rupiah
+    // ========================================================
+    function formatRupiah(angka) {
+      return "Rp " + angka.toLocaleString("id-ID");
+    }
+
+    // ========================================================
+    // MENAMPILKAN DATA KE DALAM TBODY
+    // ========================================================
+    var baris = "<tr>";
+    baris += "<td>" + namaPegawai + "</td>";
+    baris += "<td>" + umur + " tahun</td>";
+    baris += "<td>" + jabatan + "</td>";
+    baris += "<td>" + status + "</td>";
+    baris += "<td>" + formatRupiah(gajiPokok) + "</td>";
+    baris += "<td>" + formatRupiah(tunjanganJabatan) + "</td>";
+    baris += "<td>" + formatRupiah(tunjanganKeluarga) + "</td>";
+    baris += "<td>" + formatRupiah(bpjs) + "</td>";
+    baris += "</tr>";
+
+    document.getElementById("isiTabel").innerHTML = baris;
+
+    // ========================================================
+    // MENAMPILKAN TOTAL GAJI DI TFOOT
+    // ========================================================
+    document.getElementById("totalGajiCell").innerText = formatRupiah(totalGaji);
+  </script>
+</body>
+</html>
